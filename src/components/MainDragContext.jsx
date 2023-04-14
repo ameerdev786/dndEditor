@@ -76,6 +76,7 @@ function MainDragContext() {
   const [fontSize, setFontSize] = useState("16px");
   const [textAlign, setTextAlign] = useState("left");
   const [fontFamily, setFontFamily] = useState("Arial");
+  const [widgetStyle, setStyle] = useState({});
   console.log(fontFamily, "family");
   const [isDragged, setIsDragged] = useState(false);
   console.log(fontFamily, "family");
@@ -91,10 +92,12 @@ function MainDragContext() {
   }, [isEdit]);
   // update specific item when we are done with setting
   const updateWidgetItem = (widgetId, itemIndex, newItem) => {
+    setStyle(newItem);
     setColumns(prevWidgets => {
       const widget = prevWidgets[widgetId];
       const newItems = [...widget.items];
       newItems[itemIndex] = newItem;
+
       return {
         ...prevWidgets,
         [widgetId]: {
@@ -115,9 +118,11 @@ function MainDragContext() {
     }
   };
   useEffect(() => {
-    if (isEdit) {
-    }
-  }, [isEdit]);
+    if (widgetStyle?.id) {
+      alert(JSON.stringify(widgetStyle));
+      console.log(widgetStyle);
+    } 
+  }, [widgetStyle]);
   return (
     <div className="drag_component">
       <DragDropContext
@@ -171,6 +176,15 @@ function MainDragContext() {
                                                 ? textValue
                                                 : item?.content,
                                               color,
+                                              fontFamily: fontFamily
+                                                ? fontFamily
+                                                : item?.fontFamily,
+                                              fontSize: fontSize
+                                                ? fontSize
+                                                : item.fontSize,
+                                              textAlign: textAlign
+                                                ? textAlign
+                                                : item.textAlign,
                                             });
                                           }}
                                         >
